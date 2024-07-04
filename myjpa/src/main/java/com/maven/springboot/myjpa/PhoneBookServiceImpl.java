@@ -71,15 +71,29 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     public boolean remove(Long id) {
         IPhoneBook find = this.findById(id);
         if ( find != null ) {
+            PhoneBookEntity entity = new PhoneBookEntity();
+            entity.copyFields(find);
+            this.phoneBookJpaRepository.delete(entity);
+            this.phoneBookJpaRepository.flush();
             return true;
         }
         return false;
     }
 
+    // id를 받아서 객체1을찾고 객체2를 받아서 객체1을 객체2의값으로 수정한다.
     @Override
     public IPhoneBook update(Long id, IPhoneBook phoneBook) {
         IPhoneBook find = this.findById(id);
-
+        if (find != null) {
+            PhoneBookEntity entity = new PhoneBookEntity();
+            find.setName(phoneBook.getName());
+            find.setCategory(phoneBook.getCategory());
+            find.setEmail(phoneBook.getEmail());
+            find.setPhoneNumber(phoneBook.getPhoneNumber());
+            entity.copyFields(find);
+            IPhoneBook result = this.phoneBookJpaRepository.saveAndFlush(entity);
+            return result;
+        }
         return null;
     }
 

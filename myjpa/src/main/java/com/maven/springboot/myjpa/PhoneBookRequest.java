@@ -1,6 +1,7 @@
 package com.maven.springboot.myjpa;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -11,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PhoneBookRequest implements IPhoneBook {
-
+    @JsonIgnore
     private Long id;
 
     @NotBlank

@@ -39,11 +39,41 @@ public class PhoneBookController {
     }
 
     @GetMapping
-    public ResponseEntity<List<IPhoneBook>> getAll(){
-        try{
+    public ResponseEntity<List<IPhoneBook>> getAll() {
+        try {
             List<IPhoneBook> result = this.phoneBookService.getAllList();
             return ResponseEntity.ok(result);
         } catch (Exception e) {
+            logger.error(e.toString());
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    // Long 처럼 박스형 클래스는 null이 될수있어서 검사해야한다. 하지만 long 처럼 기본변수타입은 null이 될수없다
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> delete(@PathVariable Long id) {
+        try {
+            if (id == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            Boolean result = this.phoneBookService.remove(id);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            logger.error(e.toString());
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<IPhoneBook> update(@PathVariable Long id, @RequestBody PhoneBookRequest dto) {
+        try{
+            if (id == null || dto == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            IPhoneBook result = this.phoneBookService.update(id,dto);
+            return ResponseEntity.ok(result);
+        }catch (Exception e) {
             logger.error(e.toString());
             return ResponseEntity.notFound().build();
         }
