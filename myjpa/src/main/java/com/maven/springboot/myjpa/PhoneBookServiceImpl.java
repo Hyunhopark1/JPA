@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 
@@ -37,7 +36,7 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     }
 
     @Override
-    public IPhoneBook insert(String name, String category, String phoneNumber, String email) throws Exception {
+    public IPhoneBook insert(String name, ECategory category, String phoneNumber, String email) throws Exception {
         PhoneBookEntity phoneBook = PhoneBookEntity.builder()
                 .id(0L)
                 .name(name).category(category)
@@ -51,7 +50,7 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
             return false;
         } else if (dto.getName() == null || dto.getName().isEmpty()) {
             return false;
-        }else if (dto.getCategory() == null || dto.getCategory().isEmpty()) {
+        }else if (dto.getCategory() == null) {
             return false;
         }
         return true;
@@ -70,32 +69,29 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     @Override
     public boolean remove(Long id) {
         IPhoneBook find = this.findById(id);
-        if ( find != null ) {
-            PhoneBookEntity entity = new PhoneBookEntity();
-            entity.copyFields(find);
-            this.phoneBookJpaRepository.delete(entity);
-            this.phoneBookJpaRepository.flush();
-            return true;
+        if ( find == null ) {
+            return false;
+
         }
-        return false;
+        PhoneBookEntity entity = new PhoneBookEntity();
+        entity.copyFields(find);
+        this.phoneBookJpaRepository.delete(entity);
+        this.phoneBookJpaRepository.flush();
+        return true;
     }
 
     // id를 받아서 객체1을찾고 객체2를 받아서 객체1을 객체2의값으로 수정한다.
     @Override
     public IPhoneBook update(Long id, IPhoneBook phoneBook) {
         IPhoneBook find = this.findById(id);
-        if (find != null) {
-            PhoneBookEntity entity = new PhoneBookEntity();
-            find.copyFields(phoneBook);
-//            find.setName(phoneBook.getName());
-//            find.setCategory(phoneBook.getCategory());
-//            find.setEmail(phoneBook.getEmail());
-//            find.setPhoneNumber(phoneBook.getPhoneNumber());
-            entity.copyFields(find);
-            IPhoneBook result = this.phoneBookJpaRepository.saveAndFlush(entity);
-            return result;
+        if (find == null) {
+            return null;
         }
-        return null;
+        PhoneBookEntity entity = new PhoneBookEntity();
+        find.copyFields(phoneBook);
+        entity.copyFields(find);
+        IPhoneBook result = this.phoneBookJpaRepository.saveAndFlush(entity);
+        return result;
     }
 
     @Override
@@ -104,43 +100,50 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
         if (findName == null || findName.isEmpty()) {
             return new ArrayList<>();
         }
-
-        return new ArrayList<>();
+        List<PhoneBookEntity> list = this.phoneBookJpaRepository.findAllByNameContains(findName);
+        List<IPhoneBook> result = new ArrayList<>();
+        for (PhoneBookEntity item : list) {
+            result.add((IPhoneBook) item);
+        }
+        return result;
     }
 
     @Override
-    public List<IPhoneBook> getListFromGroup(ECategory category) {
+    public List<IPhoneBook> getListFromCategory(ECategory category) {
 
         if (category == null) {
             return new ArrayList<>();
         }
-
-        return new ArrayList<>();
+        List<PhoneBookEntity> list = this.phoneBookJpaRepository.findAllByCategory(category);
+        List<IPhoneBook> result = list.stream()
+                .map(x-> (IPhoneBook)x).toList();
+        return result;
     }
 
+    //여기부터 해야됨
     @Override
     public List<IPhoneBook> getListFromPhoneNumber(String findPhone) {
 
-        if (findPhone == null || findPhone.isEmpty()) {
+        if (findPhone == null) {
             return new ArrayList<>();
         }
+        List<PhoneBookEntity> list = this.phoneBookJpaRepository.findAllByPhoneNumberContains(findPhone);
+        List<IPhoneBook> result = list.stream()
+                .map(y -> (IPhoneBook) y).toList();
 
-        return new ArrayList<>();
+        return result;
     }
 
     @Override
     public List<IPhoneBook> getListFromEmail(String findEmail) {
-//        List<IPhoneBook> findArr = new ArrayList<>();
-//        for ( IPhoneBook phoneBook : this.list ) {
-//            if (phoneBook.getEmail().contains(findEmail)) {
-//                findArr.add(phoneBook);
-//            }
-//        }
-        if (findEmail == null || findEmail.isEmpty()) {
+
+        if (findEmail == null) {
             return new ArrayList<>();
         }
-
-        return new ArrayList<>();
+        List<PhoneBookEntity> list = this.phoneBookJpaRepository.findAllByEmailContains(findEmail);
+        List<IPhoneBook> result = list.stream()
+                .map( z ->(IPhoneBook)z).toList();
+        return result;
     }
 
 

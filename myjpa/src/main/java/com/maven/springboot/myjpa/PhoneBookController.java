@@ -72,6 +72,91 @@ public class PhoneBookController {
                 return ResponseEntity.badRequest().build();
             }
             IPhoneBook result = this.phoneBookService.update(id,dto);
+            if (result == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            return ResponseEntity.ok(result);
+        }catch (Exception e) {
+            logger.error(e.toString());
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<IPhoneBook> findById(@PathVariable Long id) {
+        try{
+            if (id == null || id <= 0) {
+                return ResponseEntity.badRequest().build();
+            }
+            IPhoneBook result = this.phoneBookService.findById(id);
+            if (result == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(result);
+        }catch (Exception e) {
+            logger.error(e.toString());
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<IPhoneBook>> findAllByNameContains(@PathVariable String name) {
+        try{
+            if (name == null || name.isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+            List<IPhoneBook> result = this.phoneBookService.getListFromName(name);
+            if (result == null || result.size() <= 0) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(result);
+        }catch (Exception e) {
+            logger.error(e.toString());
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @GetMapping("/phone/{phone}")
+    public ResponseEntity<List<IPhoneBook>> findAllByPhoneNumberContains(@PathVariable String phone) {
+        try{
+            if (phone == null || phone.isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+            List<IPhoneBook> result = this.phoneBookService.getListFromPhoneNumber(phone);
+            if (result == null || result.size() <= 0) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(result);
+        }catch (Exception e) {
+            logger.error(e.toString());
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @GetMapping("/email/{email}")
+    public ResponseEntity<List<IPhoneBook>> findAllByEmailContains(@PathVariable String email) {
+        try{
+            if (email == null || email.isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+            List<IPhoneBook> result = this.phoneBookService.getListFromEmail(email);
+            if (result == null || result.size() <= 0) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(result);
+        }catch (Exception e) {
+            logger.error(e.toString());
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<IPhoneBook>> findAllByCategoryContains(@PathVariable Integer category) {
+        try{
+            if (category == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            List<IPhoneBook> result = this.phoneBookService.getListFromCategory(ECategory.integerOf(category));
+            if (result == null || result.size() <= 0) {
+                return ResponseEntity.notFound().build();
+            }
             return ResponseEntity.ok(result);
         }catch (Exception e) {
             logger.error(e.toString());
