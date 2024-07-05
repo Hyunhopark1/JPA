@@ -1,7 +1,11 @@
-package com.maven.springboot.myjpa;
+package com.maven.springboot.myjpa.service;
 
 
 
+import com.maven.springboot.myjpa.model.ECategory;
+import com.maven.springboot.myjpa.model.IPhoneBook;
+import com.maven.springboot.myjpa.model.PhoneBookEntity;
+import com.maven.springboot.myjpa.repository.PhoneBookJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +33,8 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     @Override
     public List<IPhoneBook> getAllList() {
         List<IPhoneBook> list = new ArrayList<>();
-        for (PhoneBookEntity entity : this.phoneBookJpaRepository.findAll()) {
+        List<PhoneBookEntity> entities = this.phoneBookJpaRepository.findAll();
+        for (PhoneBookEntity entity :entities ) {
             list.add((IPhoneBook) entity);
         }
         return list;

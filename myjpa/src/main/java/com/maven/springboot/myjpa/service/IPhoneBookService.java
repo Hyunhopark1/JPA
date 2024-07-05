@@ -1,4 +1,7 @@
-package com.maven.springboot.myjpa;
+package com.maven.springboot.myjpa.service;
+
+import com.maven.springboot.myjpa.model.ECategory;
+import com.maven.springboot.myjpa.model.IPhoneBook;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.maven.springboot.myjpa;
+package com.maven.springboot.myjpa.model;
 
 import java.io.Serializable;
 

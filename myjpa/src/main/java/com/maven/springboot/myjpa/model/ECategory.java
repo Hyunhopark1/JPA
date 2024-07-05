@@ -1,8 +1,10 @@
-package com.maven.springboot.myjpa;
+package com.maven.springboot.myjpa.model;
 
 import java.util.Objects;
 
-public enum ECategory {
+public enum ECategory{
+
+
     Friends(0),
     Families(1),
     Schools(2),

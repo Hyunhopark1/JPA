@@ -1,5 +1,7 @@
-package com.maven.springboot.myjpa;
+package com.maven.springboot.myjpa.repository;
 
+import com.maven.springboot.myjpa.model.ECategory;
+import com.maven.springboot.myjpa.model.PhoneBookEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

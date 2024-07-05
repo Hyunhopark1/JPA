@@ -1,4 +1,4 @@
-package com.maven.springboot.myjpa;
+package com.maven.springboot.myjpa.model;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class PhoneBookDto implements IPhoneBook{
+public class PhoneBookDto implements IPhoneBook {
     private Long id;
     private String name;
     private ECategory category;
