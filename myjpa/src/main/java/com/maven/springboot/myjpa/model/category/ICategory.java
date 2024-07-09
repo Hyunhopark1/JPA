@@ -1,5 +1,6 @@
 package com.maven.springboot.myjpa.model.category;
 
+
 import java.io.Serializable;
 
 public interface ICategory extends Serializable {

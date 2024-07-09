@@ -2,10 +2,15 @@ package com.maven.springboot.myjpa.controller;
 
 
 
-import com.maven.springboot.myjpa.model.category.ECategory;
+
+import com.maven.springboot.myjpa.model.category.CategoryDto;
+import com.maven.springboot.myjpa.model.category.CategoryEntity;
+import com.maven.springboot.myjpa.model.category.ICategory;
 import com.maven.springboot.myjpa.model.phonebook.IPhoneBook;
 import com.maven.springboot.myjpa.model.phonebook.PhoneBookRequest;
+import com.maven.springboot.myjpa.service.category.ICategoryService;
 import com.maven.springboot.myjpa.service.phonebook.IPhoneBookService;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Builder
 @Slf4j
 @RestController
 @RequestMapping("/pb")
@@ -25,6 +31,9 @@ public class PhoneBookController {
     @Autowired
     private IPhoneBookService<IPhoneBook> phoneBookService;
 
+    @Autowired
+    private ICategoryService categoryService;
+
     @PostMapping
     public ResponseEntity<IPhoneBook> insertPB(@RequestBody PhoneBookRequest dto) {
         try {
@@ -34,6 +43,10 @@ public class PhoneBookController {
             IPhoneBook result = this.phoneBookService.insert(dto);
             if (result == null) {
                 return ResponseEntity.badRequest().build();
+            }
+            if (result.getCategory() != null) {
+                ICategory find = this.categoryService.findById(result.getCategory().getId());
+                result.setCategory(find);
             }
             return ResponseEntity.ok(result);
         } catch (Exception e) {
@@ -69,6 +82,7 @@ public class PhoneBookController {
         }
     }
 
+    //RequestBody 부분에 인터페이스가 올 수 없다.
     @PatchMapping("/{id}")
     public ResponseEntity<IPhoneBook> update(@PathVariable Long id, @RequestBody PhoneBookRequest dto) {
         try{
@@ -151,13 +165,16 @@ public class PhoneBookController {
         }
     }
 
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<IPhoneBook>> findAllByCategoryContains(@PathVariable Integer category) {
+    @GetMapping("/ct/{category}")
+    public ResponseEntity<List<IPhoneBook>> findAllByCategory(@PathVariable Integer category) {
         try{
             if (category == null) {
                 return ResponseEntity.badRequest().build();
             }
-            List<IPhoneBook> result = this.phoneBookService.getListFromCategory(ECategory.integerOf(category));
+            CategoryEntity categoryEntity = CategoryEntity.builder()
+                    .id(Long.parseLong(category.toString()))
+                    .build();
+            List<IPhoneBook> result = this.phoneBookService.getListFromCategory(categoryEntity);
             if (result == null || result.size() <= 0) {
                 return ResponseEntity.notFound().build();
             }

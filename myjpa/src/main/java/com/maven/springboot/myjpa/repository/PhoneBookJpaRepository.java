@@ -1,6 +1,7 @@
 package com.maven.springboot.myjpa.repository;
 
-import com.maven.springboot.myjpa.model.category.ECategory;
+import com.maven.springboot.myjpa.model.category.CategoryEntity;
+
 import com.maven.springboot.myjpa.model.phonebook.PhoneBookEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,7 +11,7 @@ public interface PhoneBookJpaRepository extends JpaRepository<PhoneBookEntity,Lo
     List<PhoneBookEntity> findAllByNameContains(String name);
     List<PhoneBookEntity> findAllByPhoneNumberContains(String phone);
     List<PhoneBookEntity> findAllByEmailContains(String email);
-    List<PhoneBookEntity> findAllByCategory(ECategory category);
+    List<PhoneBookEntity> findAllByCategory(CategoryEntity category);
 
 
 
