@@ -1,10 +1,10 @@
-package com.maven.springboot.myjpa.service;
+package com.maven.springboot.myjpa.service.phonebook;
 
 
 
-import com.maven.springboot.myjpa.model.ECategory;
-import com.maven.springboot.myjpa.model.IPhoneBook;
-import com.maven.springboot.myjpa.model.PhoneBookEntity;
+import com.maven.springboot.myjpa.model.category.ECategory;
+import com.maven.springboot.myjpa.model.phonebook.IPhoneBook;
+import com.maven.springboot.myjpa.model.phonebook.PhoneBookEntity;
 import com.maven.springboot.myjpa.repository.PhoneBookJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,7 @@ import java.util.*;
 
 public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
 
+    // 자동으로 자바빈으로 인스턴스화 해주는 어노테이션
     @Autowired
     private PhoneBookJpaRepository phoneBookJpaRepository;
 
@@ -27,6 +28,7 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
         Optional<PhoneBookEntity> find = this.phoneBookJpaRepository.findById(id);
         return find.orElse(null);
     }
+
 
 
 

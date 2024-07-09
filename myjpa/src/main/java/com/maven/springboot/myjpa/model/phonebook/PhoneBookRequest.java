@@ -1,7 +1,8 @@
-package com.maven.springboot.myjpa.model;
+package com.maven.springboot.myjpa.model.phonebook;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.maven.springboot.myjpa.model.category.ECategory;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;

@@ -1,4 +1,4 @@
-package com.maven.springboot.myjpa.model;
+package com.maven.springboot.myjpa.model.category;
 
 import java.util.Objects;
 

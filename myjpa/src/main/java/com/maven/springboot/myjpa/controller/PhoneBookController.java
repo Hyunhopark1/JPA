@@ -2,10 +2,10 @@ package com.maven.springboot.myjpa.controller;
 
 
 
-import com.maven.springboot.myjpa.model.ECategory;
-import com.maven.springboot.myjpa.model.IPhoneBook;
-import com.maven.springboot.myjpa.model.PhoneBookRequest;
-import com.maven.springboot.myjpa.service.IPhoneBookService;
+import com.maven.springboot.myjpa.model.category.ECategory;
+import com.maven.springboot.myjpa.model.phonebook.IPhoneBook;
+import com.maven.springboot.myjpa.model.phonebook.PhoneBookRequest;
+import com.maven.springboot.myjpa.service.phonebook.IPhoneBookService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

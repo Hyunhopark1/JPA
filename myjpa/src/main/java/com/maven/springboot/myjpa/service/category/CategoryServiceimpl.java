@@ -1,9 +1,7 @@
-package com.maven.springboot.myjpa.service;
+package com.maven.springboot.myjpa.service.category;
 
-import com.maven.springboot.myjpa.model.CategoryEntity;
-import com.maven.springboot.myjpa.model.ICategory;
-import com.maven.springboot.myjpa.model.IPhoneBook;
-import com.maven.springboot.myjpa.model.PhoneBookEntity;
+import com.maven.springboot.myjpa.model.category.CategoryEntity;
+import com.maven.springboot.myjpa.model.category.ICategory;
 import com.maven.springboot.myjpa.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CategoryServiceimpl implements ICategoryService<ICategory> {
+public class CategoryServiceimpl implements ICategoryService {
 
     @Autowired
     CategoryRepository categoryRepository;
@@ -27,6 +25,15 @@ public class CategoryServiceimpl implements ICategoryService<ICategory> {
     }
 
     @Override
+    public ICategory findByName(String name) {
+        if (name == null || name.isEmpty()) {
+            return null;
+        }
+        Optional<CategoryEntity> find = categoryRepository.findByName(name);
+        return find.orElse(null);
+    }
+
+    @Override
     public List<ICategory> getAllList() {
         List<ICategory> list = new ArrayList<>();
         List<CategoryEntity> entityList = categoryRepository.findAll();
@@ -36,6 +43,22 @@ public class CategoryServiceimpl implements ICategoryService<ICategory> {
         return list;
     }
 
+    private List<ICategory> getICategoryList(List<CategoryEntity> list) {
+        if ( list == null || list.size() <= 0 ) {
+            return new ArrayList<>();
+        }
+        // input : [CategoryEntity|CategoryEntity|CategoryEntity|CategoryEntity|CategoryEntity]
+//        List<ICategory> result = new ArrayList<>();
+//        for( CategoryEntity entity : list ) {
+//            result.add( (ICategory)entity );
+//        }
+        List<ICategory> result = list.stream()
+                .map(entity -> (ICategory)entity)
+                .toList();
+        // return : [ICategory|ICategory|ICategory|ICategory|ICategory]
+        return result;
+    }
+
     @Override
     public ICategory insert(ICategory category) throws Exception {
         if (category == null) {
@@ -43,8 +66,17 @@ public class CategoryServiceimpl implements ICategoryService<ICategory> {
         }
         CategoryEntity entity = new CategoryEntity();
         entity.copyFields(category);
-        ICategory result = categoryRepository.saveAndFlush(entity);
+        entity.setId(0L);
+        ICategory result = this.categoryRepository.saveAndFlush(entity);
         return result;
+    }
+    private boolean isValidInsert(ICategory category) {
+        if ( category == null ) {
+            return false;
+        } else if ( category.getName() == null || category.getName().isEmpty() ) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -75,15 +107,14 @@ public class CategoryServiceimpl implements ICategoryService<ICategory> {
     }
 
     @Override
-    public List<ICategory> getListFromName(String findName) {
-        if (findName == null || findName.isEmpty()) {
+    public List<ICategory> findAllByNameContains(String name) {
+        if ( name == null || name.isEmpty() ) {
+            //return List.of();
             return new ArrayList<>();
         }
-        List<CategoryEntity> list = this.categoryRepository.findAllByNameContains(findName);
-        List<ICategory> result = new ArrayList<>();
-        for (CategoryEntity item : list) {
-            result.add((ICategory) item);
-        }
-        return result;
+        List<ICategory> list = this.getICategoryList(
+                this.categoryRepository.findAllByNameContains(name)
+        );
+        return list;
     }
 }

@@ -1,7 +1,7 @@
-package com.maven.springboot.myjpa.service;
+package com.maven.springboot.myjpa.service.phonebook;
 
-import com.maven.springboot.myjpa.model.ECategory;
-import com.maven.springboot.myjpa.model.IPhoneBook;
+import com.maven.springboot.myjpa.model.category.ECategory;
+import com.maven.springboot.myjpa.model.phonebook.IPhoneBook;
 
 import java.util.List;
 
