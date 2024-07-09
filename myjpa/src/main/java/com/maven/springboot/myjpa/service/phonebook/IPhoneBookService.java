@@ -12,6 +12,7 @@ public interface IPhoneBookService<T> {
     T insert(T phoneBook) throws Exception;
     boolean remove(Long id) throws Exception;
     T update(Long id, T phoneBook) throws Exception;
+
     List<T> getListFromName(String findName);
     List<T> getListFromCategory(ICategory category);
 

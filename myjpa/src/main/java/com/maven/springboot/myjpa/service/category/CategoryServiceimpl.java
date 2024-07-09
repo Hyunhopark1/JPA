@@ -109,7 +109,6 @@ public class CategoryServiceimpl implements ICategoryService {
     @Override
     public List<ICategory> findAllByNameContains(String name) {
         if ( name == null || name.isEmpty() ) {
-            //return List.of();
             return new ArrayList<>();
         }
         List<ICategory> list = this.getICategoryList(
