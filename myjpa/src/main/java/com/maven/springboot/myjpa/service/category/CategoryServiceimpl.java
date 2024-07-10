@@ -61,7 +61,7 @@ public class CategoryServiceimpl implements ICategoryService {
 
     @Override
     public ICategory insert(ICategory category) throws Exception {
-        if (category == null) {
+        if ( !isValidInsert(category) ) {
             return null;
         }
         CategoryEntity entity = new CategoryEntity();
