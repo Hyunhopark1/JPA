@@ -1,19 +1,17 @@
 package com.maven.springboot.myjpa.service.phonebook;
 
 
-
 import com.maven.springboot.myjpa.model.category.CategoryEntity;
-
-
 import com.maven.springboot.myjpa.model.category.ICategory;
 import com.maven.springboot.myjpa.model.phonebook.IPhoneBook;
 import com.maven.springboot.myjpa.model.phonebook.PhoneBookEntity;
-import com.maven.springboot.myjpa.model.phonebook.PhoneBookRequest;
 import com.maven.springboot.myjpa.repository.PhoneBookJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 
