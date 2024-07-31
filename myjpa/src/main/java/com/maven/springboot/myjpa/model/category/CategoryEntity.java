@@ -19,7 +19,7 @@ public class CategoryEntity implements ICategory {
     private Long id;
 
     @NotNull
-    @Column(length = 8)
+    @Column(length = 8,unique = true)
     private String name;
 
     @Override
